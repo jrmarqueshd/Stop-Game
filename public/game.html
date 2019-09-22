@@ -11,19 +11,34 @@
 <body>
     <div id="loginField">
         <h2>Qual o seu nome?</h2>
-        
+        <div>
+            <label>
+                Nome
+                <input id="name" type="text" />
+            </label>
+
+            <button id="stop">Stop</button>
+        </div>
     </div>
     <script>
         const socket = io("http://localhost:3000/game");
+        const $inputValue = document.getElementById("name");
+        const $stopButton = document.getElementById("stop");
 
         if (window.performance) {
-            if (performance.navigation.type == 1) {
-                window.location.href -= "game.html";
-            }
+            // if (performance.navigation.type == 1) {
+            //     window.location.href = window.location.origin;
+            // }
         }
 
         socket.on("passingUser", (user)=>{
             document.querySelector("h2").innerHTML = user;
+        });
+
+        $stopButton.addEventListener("click", ()=>{
+            if($inputValue.value.length){
+                socket.emit("sendForm", $inputValue.value);
+            }
         });
     </script>
 </body>

@@ -16,21 +16,19 @@ app.use("/", (req, res)=>{
 let userName = "";
 
 io.on("connection", (socket)=>{
-    console.log(socket.id);
-    console.log(socket.handshake.headers.cookie);    
-
     socket.on("userName", (user)=>{
         userName = user;
     });
 });
 
-
 const gameSpace = io.of("/game");
 gameSpace.on("connection", (socket)=>{
-    // console.log("socket ligado ao namespace game", socket.id);
     socket.username = userName;
     socket.emit("passingUser", socket.username); 
-    // console.log(socket.cookie);
+
+    socket.on("sendForm", (form)=>{
+        socket.broadcast.emit("sendFormToAllUsers", form);
+    });
 });
 
 server.listen(3000);

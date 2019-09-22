@@ -11,19 +11,19 @@
 <body>
     <div id="loginField">
         <h2>Qual o seu nome?</h2>
-        <input type="text" name="username" id="username" />
-        <button type="button" id="chooseUsername">Selecionar</button>
+        
     </div>
     <script>
-        const socket = io("http://localhost:3000");
+        const socket = io("http://localhost:3000/game");
 
-        const $buttonLogin = document.getElementById("chooseUsername");
-
-        $buttonLogin.addEventListener("click", ()=>{
-            if(document.getElementById("username").value.length){
-                window.location.href += "game.html";
-                socket.emit("userName", document.getElementById("username").value);
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+                window.location.href -= "game.html";
             }
+        }
+
+        socket.on("passingUser", (user)=>{
+            document.querySelector("h2").innerHTML = user;
         });
     </script>
 </body>
